@@ -6,7 +6,7 @@
     <title>Spaceship Atari</title>
 </head>
 <body>
-    <canvas id = "gameCanvas" width="700" height="500"></canvas>
+    <canvas id = "gameCanvas" width="1400" height="700"></canvas>
 
     <script>
 
@@ -36,7 +36,7 @@
         const LASER_SPEED = 500;
         const LASER_NUM = 10;
         const LAS_EXPLD_TIME = 0.2;
-        const MAX_LASER_DIST = 20;
+        const MAX_LASER_DIST = 30;
         canFire = true;
         laser_exploding = 0;
         explosions = []
@@ -132,6 +132,11 @@
             if (roids[ind].r == Math.ceil(ROIDS_SIZE/2)){
                 roids.push(newAsteroid(roids[ind].x, roids[ind].y, Math.ceil(ROIDS_SIZE/4)));
                 roids.push(newAsteroid(roids[ind].x, roids[ind].y, Math.ceil(ROIDS_SIZE/4)));
+                do {
+                    x = Math.floor(Math.random() * canv.width);
+                    y = Math.floor(Math.random() * canv.height);
+                } while(distance(ship.x, ship.y, x, y) < (ROIDS_SIZE *2 + ship.r) );
+                roids.push(newAsteroid(x,y, Math.ceil(ROIDS_SIZE/2)));
             } else if (roids[ind].r == Math.ceil(ROIDS_SIZE/4)){
                 roids.push(newAsteroid(roids[ind].x, roids[ind].y, Math.ceil(ROIDS_SIZE/8)));
                 roids.push(newAsteroid(roids[ind].x, roids[ind].y, Math.ceil(ROIDS_SIZE/8)));
@@ -222,8 +227,10 @@
 
         function fireLaser() {
             
-            if (ship.lasers.length<10 && canFire == true){
+            if (ship.lasers.length<20 && canFire == true){
                 ship.lasers.push(newLaser(ship.x, ship.y, ship.a));
+                ship.lasers.push(newLaser(ship.x, ship.y, ship.a+(Math.PI/6)));
+                ship.lasers.push(newLaser(ship.x, ship.y, ship.a-(Math.PI/6)));
             }
             canFire = false;
             
